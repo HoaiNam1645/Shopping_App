@@ -45,12 +45,35 @@ class UserController extends Controller
         }
     }
 
-    public function getAll(Request $request) {
+    public function getAllUsers() {
         try {
-            
+            $result = $this->usersService->getUser();
+
+            if (!$result) {
+                return response()->json([
+                    'status' => false,
+                    'code' => 400,
+                    'message' => $result,
+                ], 400);
+            }
+
+            return response()->json([
+                'status' => true,
+                'code' => 200,
+                'data' => $result
+            ], 200);
         }
         catch (Exception $e) {
-            
+            return response()->json([
+                'status' => false,
+                'code' => 500,
+                'message' => 'Lỗi server',
+            ], 500);
         }
+    }
+
+    public function updateUser(Request $request) {
+        $userId = auth('users')->user();
+        dd($userId->id);
     }
 }

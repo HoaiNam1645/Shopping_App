@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExampleController;
@@ -16,11 +17,11 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('login', [AuthController::class, 'login']);
 
-Route::group(['prefix' => 'user'], function () {
+
+Route::group(['prefix' => 'user', 'middleware' => 'User'], function () {
     Route::post('create', [UserController::class, 'create']);
-    Route::get('getAll', [UserController::class, 'getAll']);
+    Route::get('getAll', [UserController::class, 'getAllUsers']);
+    Route::post('update', [UserController::class, 'updateUser']);
 });

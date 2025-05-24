@@ -52,4 +52,19 @@ class UsersService
                return 'Lỗi server';
           }
      }
+
+     public function getUser()
+     {
+          try {
+               $users = User::all();
+
+               if (!$users) {
+                    return 'Không tìm thấy người dùng';
+               }
+
+               return $users;
+          } catch (\Exception $e) {
+               return 'Lỗi server';
+          }
+     }
 }
