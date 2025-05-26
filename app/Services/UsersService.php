@@ -59,12 +59,20 @@ class UsersService
                $users = User::all();
 
                if (!$users) {
-                    return 'Không tìm thấy người dùng';
+                    return [
+                         'status' => false,
+                         'code' => 400,
+                         'message' => 'Không tìm thấy người dùng',
+                    ];
                }
-
-               return $users;
+               
+               return ['status' => true, 'code' => 200, 'data' => $users];
           } catch (\Exception $e) {
-               return 'Lỗi server';
+               return [
+                    'status' => false,
+                    'code' => 500,
+                    'message' => 'Lỗi server',
+               ];
           }
      }
 }

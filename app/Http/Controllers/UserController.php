@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         try {
             $result = $this->usersService->createUser($request);
-            
+
             if (is_string($result)) {
                 return response()->json([
                     'status' => false,
@@ -29,7 +29,7 @@ class UserController extends Controller
                     'message' => $result,
                 ], 400);
             }
-            
+
             return response()->json([
                 'status' => true,
                 'code' => 200,
@@ -45,34 +45,14 @@ class UserController extends Controller
         }
     }
 
-    public function getAllUsers() {
-        try {
-            $result = $this->usersService->getUser();
-
-            if (!$result) {
-                return response()->json([
-                    'status' => false,
-                    'code' => 400,
-                    'message' => $result,
-                ], 400);
-            }
-
-            return response()->json([
-                'status' => true,
-                'code' => 200,
-                'data' => $result
-            ], 200);
-        }
-        catch (Exception $e) {
-            return response()->json([
-                'status' => false,
-                'code' => 500,
-                'message' => 'Lỗi server',
-            ], 500);
-        }
+    public function getAllUsers()
+    {
+        $result = $this->usersService->getUser();
+        return response()->json($result);
     }
 
-    public function updateUser(Request $request) {
+    public function updateUser(Request $request)
+    {
         $userId = auth('users')->user();
         dd($userId->id);
     }

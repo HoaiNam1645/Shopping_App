@@ -20,16 +20,35 @@ class AuthService
           ]);
 
           if ($validator->fails()) {
-               return $validator->errors();
+               return [
+                    'status'  => false,
+                    'code'    => 422,
+                    'message' => 'Dữ liệu không hợp lệ',
+                    'errors'  => $validator->errors()
+               ];
           }
 
-          $credentials = request(['email', 'password']);
-          // admin
+          $credentials = $request->only(['email', 'password']);
           $token = auth('users')->attempt($credentials);
-          if ($token) {
-               return $token;
+
+          if (!$token) {
+               return [
+                    'status'  => false,
+                    'code'    => 401,
+                    'message' => 'Sai email hoặc mật khẩu',
+               ];
           }
-          //tim cac model va khong co ket qua thi se tra ve la khong tim
-          return 'Wrong email or password';
+
+          $user = auth('users')->user();
+
+          return [
+               'status'  => true,
+               'code'    => 200,
+               'message' => 'Đăng nhập thành công',
+               'data'    => [
+                    'token' => $token,
+                    'user'  => $user, // hoặc ->only(['id', 'email', 'name'])
+               ]
+          ];
      }
 }
